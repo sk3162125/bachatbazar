@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | InvestSecure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            min-height: 100vh;
+        }
+        
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: var(--dark);
+            color: white;
+            padding: 1.5rem;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar-nav a {
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            padding: 2rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card h3 {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+        
+        .recent-activity {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e9f5ff;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">InvestSecure</div>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> Portfolio</a></li>
+                <li><a href="#"><i class="fas fa-wallet"></i> Transactions</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <h1>Dashboard</h1>
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">JD</div>
+                    <div>
+                        <div id="userName">John Doe</div>
+                        <button class="logout-btn" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Portfolio Value</h3>
+                    <p id="portfolioValue">$12,456.78</p>
+                </div>
+                <div class="stat-card">
+                    <h3>24h Change</h3>
+                    <p style="color: var(--success);" id="dailyChange">+$245.67 (2.1%)</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Invested Amount</h3>
+                    <p id="investedAmount">$10,000.00</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Profit/Loss</h3>
+                    <p style="color: var(--success);" id="profitLoss">+$2,456.78</p>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <h2 style="margin-bottom: 1rem;">Recent Activity</h2>
+                <div class="activity-list" id="activityList">
+                    <!-- Activities will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            try {
+                // Fetch user data
+                const response = await fetch('/api/dashboard', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch dashboard data');
+                }
+
+                const data = await response.json();
+                
+                // Update UI with user data
+                document.getElementById('userName').textContent = data.user.full_name;
+                document.getElementById('userAvatar').textContent = 
+                    data.user.full_name.split(' ').map(n => n[0]).join('').toUpperCase();
+                
+                // Update dashboard stats (you would replace these with real data)
+                updateDashboardStats(data.stats);
+                populateActivityLog(data.activities);
+
+            } catch (error) {
+                console.error('Dashboard error:', error);
+                alert('Session expired. Please login again.');
+                localStorage.removeItem('token');
+                window.location.href = '/login.html';
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+        });
+
+        // Helper functions
+        function updateDashboardStats(stats) {
+            // In a real app, you would use the actual data from the API
+            document.getElementById('portfolioValue').textContent = `$${stats?.portfolioValue || '12,456.78'}`;
+            document.getElementById('dailyChange').textContent = `+$${stats?.dailyChange || '245.67'} (2.1%)`;
+            document.getElementById('investedAmount').textContent = `$${stats?.investedAmount || '10,000.00'}`;
+            document.getElementById('profitLoss').textContent = `+$${stats?.profitLoss || '2,456.78'}`;
+        }
+
+        function populateActivityLog(activities) {
+            const activityList = document.getElementById('activityList');
+            
+            // Default activities if none provided
+            const defaultActivities = [
+                { type: 'investment', message: 'Added $500 to Tech ETF', date: '2 hours ago' },
+                { type: 'dividend', message: 'Received $12.45 dividend from AAPL', date: '1 day ago' },
+                { type: 'buy', message: 'Purchased 5 shares of MSFT', date: '3 days ago' },
+                { type: 'alert', message: 'Price alert triggered for TSLA', date: '1 week ago' }
+            ];
+            
+            const activitiesToShow = activities || defaultActivities;
+            
+            activityList.innerHTML = activitiesToShow.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-${getActivityIcon(activity.type)}"></i>
+                    </div>
+                    <div>
+                        <p>${activity.message}</p>
+                        <small style="color: var(--gray);">${activity.date}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getActivityIcon(type) {
+            const icons = {
+                'investment': 'dollar-sign',
+                'dividend': 'money-bill-wave',
+                'buy': 'shopping-cart',
+                'sell': 'cash-register',
+                'alert': 'bell',
+                'default': 'info-circle'
+            };
+            return icons[type] || icons.default;
+        }
+    </script>
+</body>
+</html>

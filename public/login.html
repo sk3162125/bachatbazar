@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | InvestSecure</title>
+    <link rel="stylesheet" href="/css/auth.css">
+    <style>
+        /* Reuse your register.css styles */
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .register-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 2.5rem;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo h2 {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--gray);
+        }
+        
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--gray);
+        }
+        .login-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .forgot-password {
+            text-align: right;
+            margin: 0.5rem 0 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container login-container">
+        <div class="logo">
+            <h2>InvestSecure</h2>
+        </div>
+        <h2 class="form-title">Welcome Back</h2>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="loginEmail">Email Address</label>
+                <input type="email" id="loginEmail" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <div class="password-container">
+                    <input type="password" id="loginPassword" class="form-control" required>
+                    <i class="fas fa-eye password-toggle" id="toggleLoginPassword"></i>
+                </div>
+                <div class="forgot-password">
+                    <a href="forgot-password.html">Forgot password?</a>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        
+        <div class="login-link">
+            Don't have an account? <a href="register.html">Register here</a>
+        </div>
+    </div>
+
+    <script>
+        // Password toggle
+        document.getElementById('toggleLoginPassword').addEventListener('click', function() {
+            const password = document.getElementById('loginPassword');
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const verified = urlParams.get('verified');
+  const error = urlParams.get('error');
+
+  if (verified === 'true') {
+    showAlert('Email verified successfully! You can now login.', 'success');
+  } else if (error === 'invalid_token') {
+    showAlert('Verification link is invalid or expired', 'error');
+  }
+});
+
+function showAlert(message, type) {
+  const alertDiv = document.createElement('div');
+  alertDiv.className = `alert ${type}`;
+  alertDiv.textContent = message;
+  
+  // Add some basic styling
+  alertDiv.style.padding = '15px';
+  alertDiv.style.margin = '10px 0';
+  alertDiv.style.borderRadius = '4px';
+  alertDiv.style.color = type === 'success' ? '#155724' : '#721c24';
+  alertDiv.style.backgroundColor = type === 'success' ? '#d4edda' : '#f8d7da';
+  
+  const form = document.getElementById('loginForm');
+  form.parentNode.insertBefore(alertDiv, form);
+}
+
+        // Login form handling
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            if (data.needsVerification) {
+                // Show special message for unverified email
+                showVerificationMessage(email);
+                throw new Error(data.message);
+            }
+            throw new Error(data.error || 'Login failed');
+        }
+        
+        localStorage.setItem('token', data.token);
+        window.location.href = '/dashboard.html';
+    } catch (error) {
+        alert(error.message);
+    }
+});
+
+function showVerificationMessage(email) {
+    // Create a more user-friendly message
+    const message = `We've sent a verification link to ${email}. 
+                    Please check your inbox and verify your email before logging in.`;
+    
+    // You could replace this with a modal or dedicated HTML element
+    alert(message); 
+    
+    // Optional: Resend verification button
+    if (confirm('Resend verification email?')) {
+        resendVerificationEmail(email);
+    }
+}
+
+async function resendVerificationEmail(email) {
+    try {
+        const response = await fetch('/api/resend-verification', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+        const data = await response.json();
+        alert(data.message || 'Verification email resent');
+    } catch (err) {
+        alert('Failed to resend verification email');
+    }
+}
+    </script>
+</body>
+</html>
